@@ -2,16 +2,16 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "My Final Project Template",
+    "title": "Comparing Unemployment Rates Across U.S. States During Economic Recessions",
     "section": "",
     "text": "[~ 200 words]\nClearly stated background and questions / hypotheses / problems being addressed. Sets up the analysis in an interesting and compelling way. Include figures if you like."
   },
   {
     "objectID": "index.html#download-and-clean-all-required-data",
     "href": "index.html#download-and-clean-all-required-data",
-    "title": "My Final Project Template",
+    "title": "Comparing Unemployment Rates Across U.S. States During Economic Recessions",
     "section": "Download and clean all required data",
-    "text": "Download and clean all required data\n\nn=20\ndata=data.frame(x=runif(n,-180,180),\n                y=runif(n,-60,60),\n                size = runif(n, 5, 20),\n                category = factor(\n                  sample(letters[1:5], n, replace = TRUE)\n                  ),\n                value = rnorm(n))\n\ndata %&gt;% \n  slice(1:10) %&gt;% #show only 1:n rows\n  kable(digits=2,align=\"c\")%&gt;% #make table and round to two digits\n  kable_styling(bootstrap_options = \n                  c(\"striped\", \"hover\", \"condensed\", \"responsive\")) #apply other formatting\n\n\n\n\nx\ny\nsize\ncategory\nvalue\n\n\n\n\n37.59\n15.11\n15.77\nc\n0.04\n\n\n150.49\n-48.07\n13.10\ne\n0.46\n\n\n119.54\n-29.34\n9.69\nb\n1.96\n\n\n72.33\n-39.68\n12.56\nc\n0.68\n\n\n121.16\n19.25\n14.26\nc\n0.02\n\n\n93.06\n32.36\n16.21\na\n1.34\n\n\n118.63\n-29.91\n19.36\ne\n0.55\n\n\n-19.89\n0.52\n18.02\na\n-0.09\n\n\n-48.72\n29.39\n14.17\ne\n-0.74\n\n\n-109.78\n-43.51\n16.05\nd\n-0.21\n\n\n\n\n\n\nAdd any additional processing steps here."
+    "text": "Download and clean all required data\n\nn=20\ndata=data.frame(x=runif(n,-180,180),\n                y=runif(n,-60,60),\n                size = runif(n, 5, 20),\n                category = factor(\n                  sample(letters[1:5], n, replace = TRUE)\n                  ),\n                value = rnorm(n))\n\ndata %&gt;% \n  slice(1:10) %&gt;% #show only 1:n rows\n  kable(digits=2,align=\"c\")%&gt;% #make table and round to two digits\n  kable_styling(bootstrap_options = \n                  c(\"striped\", \"hover\", \"condensed\", \"responsive\")) #apply other formatting\n\n\n\n\nx\ny\nsize\ncategory\nvalue\n\n\n\n\n-176.28\n31.76\n7.90\nb\n0.04\n\n\n4.56\n13.30\n6.25\na\n1.11\n\n\n28.54\n14.38\n7.20\nd\n-0.93\n\n\n-118.47\n-48.13\n14.79\nd\n-0.58\n\n\n78.08\n22.66\n11.01\ne\n-0.35\n\n\n-0.42\n-35.75\n18.86\ne\n-0.35\n\n\n-173.93\n-2.29\n18.50\ne\n1.69\n\n\n-1.07\n22.93\n14.34\nd\n-0.06\n\n\n-34.30\n-47.31\n14.90\na\n-0.63\n\n\n12.61\n-42.87\n6.74\ne\n-0.82\n\n\n\n\n\n\nAdd any additional processing steps here."
   },
   {
     "objectID": "data/Readme.html",
