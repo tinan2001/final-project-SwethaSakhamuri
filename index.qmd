@@ -29,14 +29,15 @@ if (!requireNamespace("sf", quietly = TRUE)) install.packages("sf")
 if (!requireNamespace("maps", quietly = TRUE)) install.packages("maps")
 if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
 if (!requireNamespace("tidyverse", quietly = TRUE)) install.packages("tidyverse")
-if (!requireNamespace("magick", quietly = TRUE)) install.packages("magick")
+if (!requireNamespace("gifski", quietly = TRUE)) install.packages("gifski", type = "binary")
+
 library(dplyr)
 library(ggplot2)
 library(gganimate)
 library(sf)
 library(maps)
 library(tidyverse)
-library(magick)
+library(gifski)
 ```
 
 ### Load the monthly dataset 
