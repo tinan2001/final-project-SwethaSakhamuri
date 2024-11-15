@@ -6,8 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Swetha Sakhamuri">
-<meta name="dcterms.date" content="2024-11-11">
+<meta name="author" content="Swetha">
+<meta name="dcterms.date" content="2024-11-14">
 
 <title>Comparing Unemployment Rates Across U.S. States During Economic Recessions – GEO511_FinalProject</title>
 <style>
@@ -102,25 +102,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
-<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
-<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
-<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
-<script src="site_libs/proj4-2.6.2/proj4.min.js"></script>
-<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
-<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
-<script src="site_libs/leaflet-binding-2.2.2/leaflet.js"></script>
-<link href="site_libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet">
-<script src="site_libs/dygraphs-1.1.1/dygraph-combined.js"></script>
-<script src="site_libs/dygraphs-1.1.1/shapes.js"></script>
-<script src="site_libs/moment-2.8.4/moment.js"></script>
-<script src="site_libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
-<script src="site_libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
-<script src="site_libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
 
 
 </head>
@@ -177,14 +158,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Swetha Sakhamuri </p>
+             <p>Swetha </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 11, 2024</p>
+      <p class="date">November 14, 2024</p>
     </div>
   </div>
   
@@ -196,204 +177,353 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>[~ 200 words]</p>
-<p>Clearly stated background and questions / hypotheses / problems being addressed. Sets up the analysis in an interesting and compelling way. Include figures if you like.</p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>This project analyzes unemployment rate fluctuations across U.S. states during two major economic downturns: the 2008 financial crisis and the COVID-19 pandemic. By leveraging spatial and temporal data, we map and compare unemployment rate changes before, during, and after these recessions. The insights from this analysis may highlight patterns in economic impact and recovery across states, informing potential strategies for future recession management.</p>
 </section>
-<section id="materials-and-methods" class="level1">
-<h1>Materials and methods</h1>
-<p>[~ 200 words]</p>
-<p>Narrative: Clear narrative description of the data sources and methods. Includes data from at least two sources that were integrated / merged in R.</p>
-<p>Code: The code associated with the project is well organized and easy to follow. Demonstrates mastery of R graphics and functions.</p>
-<p>Data: The underlying data are publicly accessible via the web and downloaded/accessed within the Rmd script. If you want to use your own data, you must make it available on a website (e.g.&nbsp;Figshare) so that others are able to re-run your code.</p>
-<p>You can do bullets like this:</p>
-<ul>
-<li>The first most important thing</li>
-<li>The second most important thing</li>
-<li>The third most important thing</li>
-</ul>
-<p>You can do numbers like this:</p>
+<section id="materials-and-methods" class="level2">
+<h2 class="anchored" data-anchor-id="materials-and-methods">Materials and Methods</h2>
+<section id="data-sources" class="level3">
+<h3 class="anchored" data-anchor-id="data-sources">Data Sources</h3>
 <ol type="1">
-<li>The first most important thing</li>
-<li>The second most important thing</li>
-<li>The third most important thing</li>
+<li><strong>U.S. Bureau of Labor Statistics (BLS):</strong> Monthly state-level unemployment data.</li>
+<li><strong>U.S. Census Bureau:</strong> State population estimates.</li>
 </ol>
-<p>See <a href="http://rmarkdown.rstudio.com/" class="uri">http://rmarkdown.rstudio.com/</a> for all the amazing things you can do.</p>
-<p>Here’s my first code chunk.</p>
+</section>
+<section id="data-cleaning-and-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="data-cleaning-and-preparation">Data Cleaning and Preparation</h3>
+<p>The following code loads, cleans, and aggregates the data. ### Load libraries</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">=</span><span class="dv">3</span><span class="sc">+</span><span class="dv">4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Refer to output in your narrative like this: x=7 .</p>
-<p>Load any required packages in a code chunk (you may need to install some packages):</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(htmlwidgets)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(widgetframe)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">widgetframe_widgets_dir =</span> <span class="st">'widgets'</span> ) </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">cache=</span><span class="cn">TRUE</span>)  <span class="co"># cache the results for quick compiling</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<section id="download-and-clean-all-required-data" class="level2">
-<h2 class="anchored" data-anchor-id="download-and-clean-all-required-data">Download and clean all required data</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n<span class="ot">=</span><span class="dv">20</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">runif</span>(n,<span class="sc">-</span><span class="dv">180</span>,<span class="dv">180</span>),</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">y=</span><span class="fu">runif</span>(n,<span class="sc">-</span><span class="dv">60</span>,<span class="dv">60</span>),</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span> <span class="fu">runif</span>(n, <span class="dv">5</span>, <span class="dv">20</span>),</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">category =</span> <span class="fu">factor</span>(</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">sample</span>(letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                  ),</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">value =</span> <span class="fu">rnorm</span>(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="co">#show only 1:n rows</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits=</span><span class="dv">2</span>,<span class="at">align=</span><span class="st">"c"</span>)<span class="sc">%&gt;%</span> <span class="co">#make table and round to two digits</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>, <span class="st">"responsive"</span>)) <span class="co">#apply other formatting</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="table-responsive">
-<table class="table table-striped table-hover table-condensed caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: center;" data-quarto-table-cell-role="th">x</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">y</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">size</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">category</th>
-<th style="text-align: center;" data-quarto-table-cell-role="th">value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">-176.28</td>
-<td style="text-align: center;">31.76</td>
-<td style="text-align: center;">7.90</td>
-<td style="text-align: center;">b</td>
-<td style="text-align: center;">0.04</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">4.56</td>
-<td style="text-align: center;">13.30</td>
-<td style="text-align: center;">6.25</td>
-<td style="text-align: center;">a</td>
-<td style="text-align: center;">1.11</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">28.54</td>
-<td style="text-align: center;">14.38</td>
-<td style="text-align: center;">7.20</td>
-<td style="text-align: center;">d</td>
-<td style="text-align: center;">-0.93</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">-118.47</td>
-<td style="text-align: center;">-48.13</td>
-<td style="text-align: center;">14.79</td>
-<td style="text-align: center;">d</td>
-<td style="text-align: center;">-0.58</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">78.08</td>
-<td style="text-align: center;">22.66</td>
-<td style="text-align: center;">11.01</td>
-<td style="text-align: center;">e</td>
-<td style="text-align: center;">-0.35</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">-0.42</td>
-<td style="text-align: center;">-35.75</td>
-<td style="text-align: center;">18.86</td>
-<td style="text-align: center;">e</td>
-<td style="text-align: center;">-0.35</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">-173.93</td>
-<td style="text-align: center;">-2.29</td>
-<td style="text-align: center;">18.50</td>
-<td style="text-align: center;">e</td>
-<td style="text-align: center;">1.69</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">-1.07</td>
-<td style="text-align: center;">22.93</td>
-<td style="text-align: center;">14.34</td>
-<td style="text-align: center;">d</td>
-<td style="text-align: center;">-0.06</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">-34.30</td>
-<td style="text-align: center;">-47.31</td>
-<td style="text-align: center;">14.90</td>
-<td style="text-align: center;">a</td>
-<td style="text-align: center;">-0.63</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">12.61</td>
-<td style="text-align: center;">-42.87</td>
-<td style="text-align: center;">6.74</td>
-<td style="text-align: center;">e</td>
-<td style="text-align: center;">-0.82</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"gganimate"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"gganimate"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Downloading packages -------------------------------------------------------
+- Downloading gganimate from CRAN ...           OK [2 Mb in 0.35s]
+- Downloading transformr from CRAN ...          OK [162.2 Kb in 0.36s]
+- Downloading tweenr from CRAN ...              OK [443.8 Kb in 0.35s]
+- Downloading sf from CRAN ...                  OK [3.6 Mb in 0.33s]
+- Downloading classInt from CRAN ...            OK [487.3 Kb in 0.37s]
+- Downloading e1071 from CRAN ...               OK [582.2 Kb in 0.36s]
+- Downloading proxy from CRAN ...               OK [171.5 Kb in 0.33s]
+- Downloading s2 from CRAN ...                  OK [2.1 Mb in 0.6s]
+- Downloading wk from CRAN ...                  OK [1.7 Mb in 0.35s]
+- Downloading units from CRAN ...               OK [354.5 Kb in 0.38s]
+- Downloading lpSolve from CRAN ...             OK [365.4 Kb in 0.33s]
+Successfully downloaded 11 packages in 6.8 seconds.
 
+The following package(s) will be installed:
+- classInt   [0.4-10]
+- e1071      [1.7-16]
+- gganimate  [1.0.9]
+- lpSolve    [5.6.22]
+- proxy      [0.4-27]
+- s2         [1.1.7]
+- sf         [1.0-19]
+- transformr [0.1.5]
+- tweenr     [2.0.3]
+- units      [0.8-5]
+- wk         [0.9.4]
+These packages will be installed into "~/work/final-project-SwethaSakhamuri/final-project-SwethaSakhamuri/renv/library/linux-ubuntu-jammy/R-4.4/x86_64-pc-linux-gnu".
 
-<p>Add any additional processing steps here.</p>
+# Installing packages --------------------------------------------------------
+- Installing tweenr ...                         OK [installed binary and cached in 0.33s]
+- Installing proxy ...                          OK [installed binary and cached in 0.2s]
+- Installing e1071 ...                          OK [installed binary and cached in 0.22s]
+- Installing classInt ...                       OK [installed binary and cached in 0.22s]
+- Installing wk ...                             OK [installed binary and cached in 0.25s]
+- Installing s2 ...                             OK [installed binary and cached in 0.34s]
+- Installing units ...                          OK [installed binary and cached in 0.3s]
+- Installing sf ...                             OK [installed binary and cached in 0.85s]
+- Installing lpSolve ...                        OK [installed binary and cached in 0.21s]
+- Installing transformr ...                     OK [installed binary and cached in 0.64s]
+- Installing gganimate ...                      OK [installed binary and cached in 0.71s]
+Successfully installed 11 packages in 4.7 seconds.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"dplyr"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"dplyr"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"sf"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"sf"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"maps"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"maps"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Downloading packages -------------------------------------------------------
+- Downloading maps from CRAN ...                OK [2.9 Mb in 0.35s]
+Successfully downloaded 1 package in 0.58 seconds.
+
+The following package(s) will be installed:
+- maps [3.4.2.1]
+These packages will be installed into "~/work/final-project-SwethaSakhamuri/final-project-SwethaSakhamuri/renv/library/linux-ubuntu-jammy/R-4.4/x86_64-pc-linux-gnu".
+
+# Installing packages --------------------------------------------------------
+- Installing maps ...                           OK [installed binary and cached in 0.26s]
+Successfully installed 1 package in 0.31 seconds.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"ggplot2"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"tidyverse"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>No renderer backend detected. gganimate will default to writing frames to separate files
+Consider installing:
+- the `gifski` package for gif output
+- the `av` package for video output
+and restarting the R session</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.10.2, GDAL 3.4.1, PROJ 8.2.1; sf_use_s2() is TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(maps)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ lubridate 1.9.3     ✔ tibble    3.2.1
+✔ purrr     1.0.2     ✔ tidyr     1.3.1
+✔ readr     2.1.5     </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+✖ purrr::map()    masks maps::map()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+</section>
+<section id="load-the-monthly-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="load-the-monthly-dataset">Load the monthly dataset</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/States_Unemploment_Data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-cleaning-steps" class="level3">
+<h3 class="anchored" data-anchor-id="data-cleaning-steps">Data Cleaning Steps</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Drop duplicate rows</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Remove rows with any missing values</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>()</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Replace placeholder values ("NA", "unknown") with NA</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>data[data <span class="sc">==</span> <span class="st">"NA"</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>data[data <span class="sc">==</span> <span class="st">"unknown"</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Identify and clean inconsistent values (e.g., if certain columns should only contain specific ranges or categories)</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Ensure `Unemployment_rate` is within a realistic range (0 - 100)</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Unemployment_rate <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> Unemployment_rate <span class="sc">&lt;=</span> <span class="dv">100</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for remaining missing values after cleaning</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    State                Year         Period         
+ Length:7344        Min.   :2006   Length:7344       
+ Class :character   1st Qu.:2009   Class :character  
+ Mode  :character   Median :2012   Mode  :character  
+                    Mean   :2014                     
+                    3rd Qu.:2019                     
+                    Max.   :2022                     
+ Labor_Force_Participation_Ratio Employment_Participation_Ratio
+ Min.   :52.60                   Min.   :41.70                 
+ 1st Qu.:61.80                   1st Qu.:57.90                 
+ Median :64.70                   Median :60.80                 
+ Mean   :64.79                   Mean   :61.03                 
+ 3rd Qu.:68.10                   3rd Qu.:64.50                 
+ Max.   :74.70                   Max.   :72.40                 
+  Labor_Force         Employment        Unemployment     Unemployment_rate
+ Min.   :  281549   Min.   :  272394   Min.   :   6835   Min.   : 1.900   
+ 1st Qu.:  779246   1st Qu.:  745945   1st Qu.:  40342   1st Qu.: 3.800   
+ Median : 2056275   Median : 1920110   Median : 105112   Median : 5.100   
+ Mean   : 3084129   Mean   : 2890735   Mean   : 193394   Mean   : 5.825   
+ 3rd Qu.: 3733868   3rd Qu.: 3477744   3rd Qu.: 234754   3rd Qu.: 7.600   
+ Max.   :19592298   Max.   :18732265   Max.   :3015308   Max.   :30.600   
+    Latitude       Longitude      
+ Min.   :19.90   Min.   :-155.67  
+ 1st Qu.:35.52   1st Qu.:-105.03  
+ Median :39.55   Median : -89.40  
+ Mean   :39.56   Mean   : -93.34  
+ 3rd Qu.:43.30   3rd Qu.: -78.66  
+ Max.   :63.59   Max.   : -69.45  </code></pre>
+</div>
+</div>
+</section>
+<section id="aggregate-data-by-state-and-year-to-calculate-the-annual-averages" class="level3">
+<h3 class="anchored" data-anchor-id="aggregate-data-by-state-and-year-to-calculate-the-annual-averages">Aggregate data by State and Year to calculate the annual averages</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>annual_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(State, Year) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Labor_Force_Participation_Ratio =</span> <span class="fu">mean</span>(Labor_Force_Participation_Ratio, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Employment_Participation_Ratio =</span> <span class="fu">mean</span>(Employment_Participation_Ratio, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Labor_Force =</span> <span class="fu">mean</span>(Labor_Force, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Employment =</span> <span class="fu">mean</span>(Employment, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Unemployment =</span> <span class="fu">mean</span>(Unemployment, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Unemployment_rate =</span> <span class="fu">mean</span>(Unemployment_rate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Latitude =</span> <span class="fu">first</span>(Latitude),</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Longitude =</span> <span class="fu">first</span>(Longitude)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'State'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows of the aggregated data</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(annual_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 10
+  State    Year Labor_Force_Participation_R…¹ Employment_Participa…² Labor_Force
+  &lt;chr&gt;   &lt;int&gt;                         &lt;dbl&gt;                  &lt;dbl&gt;       &lt;dbl&gt;
+1 Alabama  2006                          61.6                   59.1    2169933.
+2 Alabama  2007                          61.3                   58.8    2180868.
+3 Alabama  2008                          60.6                   57.0    2177201.
+4 Alabama  2009                          59.6                   53.6    2157016.
+5 Alabama  2010                          59.5                   53.3    2196694.
+6 Alabama  2011                          59.1                   53.5    2201954.
+# ℹ abbreviated names: ¹​Labor_Force_Participation_Ratio,
+#   ²​Employment_Participation_Ratio
+# ℹ 5 more variables: Employment &lt;dbl&gt;, Unemployment &lt;dbl&gt;,
+#   Unemployment_rate &lt;dbl&gt;, Latitude &lt;dbl&gt;, Longitude &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="visualization-techniques" class="level3">
+<h3 class="anchored" data-anchor-id="visualization-techniques">Visualization Techniques</h3>
+<ol type="1">
+<li>State-Level Map Visualization</li>
+<li>Time-Series Trend Charts</li>
+<li>Bar Chart Race</li>
+</ol>
 </section>
 </section>
 <section id="results" class="level1">
 <h1>Results</h1>
-<p>[~200 words]</p>
-<p>Tables and figures (maps and other graphics) are carefully planned to convey the results of your analysis. Intense exploration and evidence of many trials and failures. The author looked at the data in many different ways before coming to the final presentation of the data.</p>
-<p>Show tables, plots, etc. and describe them.</p>
+<section id="map-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="map-visualization">Map Visualization</h2>
+<section id="the-following-animated-map-shows-the-unemployment-rate-across-states-over-time.-the-color-scale-represents-unemployment-rate-levels." class="level3">
+<h3 class="anchored" data-anchor-id="the-following-animated-map-shows-the-unemployment-rate-across-states-over-time.-the-color-scale-represents-unemployment-rate-levels.">The following animated map shows the unemployment rate across states over time. The color scale represents unemployment rate levels.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">leaflet</span>(data) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(<span class="sc">~</span>x, <span class="sc">~</span>y, <span class="at">radius =</span> <span class="sc">~</span>size,<span class="at">color =</span> <span class="sc">~</span><span class="fu">as.factor</span>(category)) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPopups</span>(<span class="sc">~</span>x[<span class="dv">2</span>], <span class="sc">~</span>y[<span class="dv">2</span>], <span class="st">"Random popup"</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>m  <span class="co"># a map with the default OSM tile layer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-d61dc6a2be07eb56e08c" style="width:100%;height:325px;"></div>
-<script type="application/json" data-for="htmlwidget-d61dc6a2be07eb56e08c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addCircleMarkers","args":[[31.76191890612245,13.3029961399734,14.37612061388791,-48.12995416112244,22.6606157887727,-35.74894621968269,-2.291976856067777,22.928123222664,-47.31113338842988,-42.87123293615878,-55.60895822010934,-37.18081631697714,-13.09968028217554,31.05464385822415,-51.09273405745625,-7.311647236347198,47.58616668172181,11.43845007754862,-32.23209053277969,-0.5714384838938713],[-176.2766691762954,4.558083470910788,28.5420092381537,-118.4746175631881,78.08351305313408,-0.4162616562098265,-173.9268659055233,-1.067150132730603,-34.30435166694224,12.61348435655236,7.20016454346478,-140.9373810421675,113.390019312501,-71.97661480866373,24.86289747990668,153.8249035924673,76.61893280223012,31.47816904820502,140.7980051636696,-13.93952306360006],[7.898215311579406,6.24948448734358,7.197982127545401,14.78739154641517,11.00905966595747,18.86326365638524,18.50093286600895,14.33500166633166,14.89683895255439,6.740612694993615,12.05836374196224,19.8508822824806,6.687324228696525,5.239038645522669,13.27083531999961,19.60964723606594,19.70093050273135,14.58236970938742,12.94192609027959,18.57848386163823],null,null,{"interactive":true,"className":"","stroke":true,"color":["b","a","d","d","e","e","e","d","a","e","c","e","e","d","d","b","e","a","d","d"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["b","a","d","d","e","e","e","d","a","e","c","e","e","d","d","b","e","a","d","d"],"fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addPopups","args":[13.3029961399734,4.558083470910788,"Random popup",null,null,{"maxWidth":300,"minWidth":50,"autoPan":true,"keepInView":false,"closeButton":true,"className":""}]}],"limits":{"lat":[-55.60895822010934,47.58616668172181],"lng":[-176.2766691762954,153.8249035924673]}},"evals":[],"jsHooks":[]}</script>
-<p>Map of completely random data</p>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>us_map <span class="ot">&lt;-</span> <span class="fu">map_data</span>(<span class="st">"state"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>annual_data<span class="sc">$</span>region <span class="ot">&lt;-</span> <span class="fu">tolower</span>(annual_data<span class="sc">$</span>State)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge map data with your dataset</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>map_data <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(us_map, annual_data, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"region"</span> <span class="ot">=</span> <span class="st">"region"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in inner_join(us_map, annual_data, by = c(region = "region")): Detected an unexpected many-to-many relationship between `x` and `y`.
+ℹ Row 1 of `x` matches multiple rows in `y`.
+ℹ Row 1 of `y` matches multiple rows in `x`.
+ℹ If a many-to-many relationship is expected, set `relationship =
+  "many-to-many"` to silence this warning.</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Animated Map Code</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(map_data, <span class="fu">aes</span>(long, lat, <span class="at">group =</span> group, <span class="at">fill =</span> Unemployment_rate)) <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"#2D004B"</span>, <span class="st">"#4144B3"</span>, <span class="st">"#1EA8C1"</span>, <span class="st">"#A8E200"</span>, <span class="st">"#FFDD00"</span>, <span class="st">"#FF6600"</span>),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">values =</span> scales<span class="sc">::</span><span class="fu">rescale</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">16</span>)),</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">name =</span> <span class="st">"Unemployment Rate (%)"</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">16</span>)) <span class="sc">+</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment Rate by State"</span>, <span class="at">subtitle =</span> <span class="st">"Year: {frame_time}"</span>) <span class="sc">+</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>(<span class="fl">1.3</span>) <span class="sc">+</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_time</span>(Year) <span class="sc">+</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ease_aes</span>(<span class="st">'linear'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: No renderer available. Please install the gifski, av, or magick package to
+create animated output</code></pre>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">col=</span>category))<span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<section id="dygraphs-example" class="level3">
-<h3 class="anchored" data-anchor-id="dygraphs-example">Dygraphs Example</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dygraphs)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dygraph</span>(nhtemp, <span class="at">main =</span> <span class="st">"New Haven Temperatures"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dyRangeSelector</span>(<span class="at">dateWindow =</span> <span class="fu">c</span>(<span class="st">"1920-01-01"</span>, <span class="st">"1960-01-01"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div class="dygraphs html-widget html-fill-item" id="htmlwidget-24e14539c765432b93f8" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-24e14539c765432b93f8">{"x":{"attrs":{"title":"New Haven Temperatures","labels":["year","V1"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}},"showRangeSelector":true,"dateWindow":["1920-01-01T00:00:00.000Z","1960-01-01T00:00:00.000Z"],"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel"},"scale":"yearly","annotations":[],"shadings":[],"events":[],"format":"date","data":[["1912-01-01T00:00:00.000Z","1913-01-01T00:00:00.000Z","1914-01-01T00:00:00.000Z","1915-01-01T00:00:00.000Z","1916-01-01T00:00:00.000Z","1917-01-01T00:00:00.000Z","1918-01-01T00:00:00.000Z","1919-01-01T00:00:00.000Z","1920-01-01T00:00:00.000Z","1921-01-01T00:00:00.000Z","1922-01-01T00:00:00.000Z","1923-01-01T00:00:00.000Z","1924-01-01T00:00:00.000Z","1925-01-01T00:00:00.000Z","1926-01-01T00:00:00.000Z","1927-01-01T00:00:00.000Z","1928-01-01T00:00:00.000Z","1929-01-01T00:00:00.000Z","1930-01-01T00:00:00.000Z","1931-01-01T00:00:00.000Z","1932-01-01T00:00:00.000Z","1933-01-01T00:00:00.000Z","1934-01-01T00:00:00.000Z","1935-01-01T00:00:00.000Z","1936-01-01T00:00:00.000Z","1937-01-01T00:00:00.000Z","1938-01-01T00:00:00.000Z","1939-01-01T00:00:00.000Z","1940-01-01T00:00:00.000Z","1941-01-01T00:00:00.000Z","1942-01-01T00:00:00.000Z","1943-01-01T00:00:00.000Z","1944-01-01T00:00:00.000Z","1945-01-01T00:00:00.000Z","1946-01-01T00:00:00.000Z","1947-01-01T00:00:00.000Z","1948-01-01T00:00:00.000Z","1949-01-01T00:00:00.000Z","1950-01-01T00:00:00.000Z","1951-01-01T00:00:00.000Z","1952-01-01T00:00:00.000Z","1953-01-01T00:00:00.000Z","1954-01-01T00:00:00.000Z","1955-01-01T00:00:00.000Z","1956-01-01T00:00:00.000Z","1957-01-01T00:00:00.000Z","1958-01-01T00:00:00.000Z","1959-01-01T00:00:00.000Z","1960-01-01T00:00:00.000Z","1961-01-01T00:00:00.000Z","1962-01-01T00:00:00.000Z","1963-01-01T00:00:00.000Z","1964-01-01T00:00:00.000Z","1965-01-01T00:00:00.000Z","1966-01-01T00:00:00.000Z","1967-01-01T00:00:00.000Z","1968-01-01T00:00:00.000Z","1969-01-01T00:00:00.000Z","1970-01-01T00:00:00.000Z","1971-01-01T00:00:00.000Z"],[49.9,52.3,49.4,51.1,49.4,47.9,49.8,50.9,49.3,51.9,50.8,49.6,49.3,50.6,48.4,50.7,50.9,50.6,51.5,52.8,51.8,51.1,49.8,50.2,50.4,51.6,51.8,50.9,48.8,51.7,51,50.6,51.7,51.5,52.1,51.3,51,54,51.4,52.7,53.1,54.6,52,52,50.9,52.6,50.2,52.6,51.6,51.9,50.5,50.9,51.7,51.4,51.7,50.8,51.9,51.8,51.9,53]]},"evals":["attrs.interactionModel"],"jsHooks":[]}</script>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
 </div>
 </div>
 </section>
 </section>
-<section id="conclusions" class="level1">
-<h1>Conclusions</h1>
-<p>[~200 words]</p>
-<p>Clear summary adequately describing the results and putting them in context. Discussion of further questions and ways to continue investigation.</p>
 </section>
-<section id="references" class="level1">
-<h1>References</h1>
-<p>All sources are cited in a consistent manner</p>
+<section id="line-plot-of-unemployment-trends" class="level1">
+<h1>Line Plot of Unemployment Trends</h1>
+<section id="this-line-plot-illustrates-unemployment-rate-trends-by-state-over-time." class="level3">
+<h3 class="anchored" data-anchor-id="this-line-plot-illustrates-unemployment-rate-trends-by-state-over-time.">This line plot illustrates unemployment rate trends by state over time.</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(annual_data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Unemployment_rate, <span class="at">color =</span> State, <span class="at">group =</span> State)) <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Unemployment Rate Over Time by State"</span>, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Unemployment Rate (%)"</span>) <span class="sc">+</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_reveal</span>(Year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: No renderer available. Please install the gifski, av, or magick package to
+create animated output</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#animate(line_plot, nframes = 100, fps = 10,renderer = gifski_renderer())</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="bar-chart-race-of-top-10-states-by-unemployment-rate" class="level1">
+<h1>Bar Chart Race of Top 10 States by Unemployment Rate</h1>
+<section id="a-bar-chart-race-visualizes-the-top-10-states-with-the-highest-unemployment-rate-each-year." class="level3">
+<h3 class="anchored" data-anchor-id="a-bar-chart-race-visualizes-the-top-10-states-with-the-highest-unemployment-rate-each-year.">A bar chart race visualizes the top 10 states with the highest unemployment rate each year.</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>top_states <span class="ot">&lt;-</span> annual_data <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">%&gt;%</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">10</span>, Unemployment_rate) <span class="sc">%&gt;%</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Year, <span class="sc">-</span>Unemployment_rate)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar Chart Race Code</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(top_states, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(State, <span class="sc">-</span>Unemployment_rate), <span class="at">y =</span> Unemployment_rate, <span class="at">fill =</span> State)) <span class="sc">+</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Top 10 States by Unemployment Rate"</span>,</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Year: {frame_time}"</span>,</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"State"</span>,</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Unemployment Rate (%)"</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_time</span>(Year) <span class="sc">+</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ease_aes</span>(<span class="st">'linear'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: No renderer available. Please install the gifski, av, or magick package to
+create animated output</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>The graphical analysis of U.S. unemployment rates during the 2008 financial crisis and the COVID-19 pandemic highlights significant trends and disparities in economic resilience across states.</p>
+<ol type="1">
+<li><p>From the animated map visualization, we observe that states with diverse, service-based economies (such as California and New York) experienced sharp rises in unemployment during both crises. However, these states tended to recover faster due to a shift toward remote work and flexible job structures, especially during COVID-19.</p></li>
+<li><p>States heavily reliant on specific sectors like tourism and manufacturing (e.g., Nevada and Michigan) faced prolonged high unemployment rates. This suggests that sector-specific economic dependencies can heighten vulnerability during global economic disruptions.</p></li>
+<li><p>The line plot of unemployment trends over time reveals that while the 2008 financial crisis caused a relatively uniform spike in unemployment across states, the COVID-19 pandemic led to more varied impacts, with certain states being hit much harder than others. This difference may be attributed to varying public health restrictions, digital adaptability, and government support measures across states.</p></li>
+<li><p>The bar chart race visualization, showing the top 10 states with the highest unemployment rates over time, highlights that certain states consistently appeared in the high-unemployment category across crises. This indicates persistent structural challenges that may require targeted policy interventions.</p></li>
+</ol>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
