@@ -26,8 +26,7 @@ The following code loads, cleans, and aggregates the data.
 if (!requireNamespace("gganimate", quietly = TRUE)) install.packages("gganimate")
 if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
 if (!requireNamespace("sf", quietly = TRUE)) install.packages("sf")
-
-if (!requireNamespace("sf", quietly = TRUE)) install.packages("sf")
+if (!requireNamespace("maps", quietly = TRUE)) install.packages("maps")
 if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
 if (!requireNamespace("tidyverse", quietly = TRUE)) install.packages("tidyverse")
 
@@ -82,8 +81,6 @@ annual_data <- data %>%
   ) %>%
   ungroup()
 
-# Save the aggregated data to a new CSV (optional)
-#write.csv(annual_data, "States_Unemployment_Annual_Avg_Data.csv", row.names = FALSE)
 
 # Display the first few rows of the aggregated data
 head(annual_data)
