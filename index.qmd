@@ -7,7 +7,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 
-
 ```
 
 
@@ -24,6 +23,14 @@ This project analyzes unemployment rate fluctuations across U.S. states during t
 The following code loads, cleans, and aggregates the data.
 ### Load libraries
 ```{r}
+if (!requireNamespace("gganimate", quietly = TRUE)) install.packages("gganimate")
+if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
+if (!requireNamespace("sf", quietly = TRUE)) install.packages("sf")
+if (!requireNamespace("magick", quietly = TRUE)) install.packages("magick")
+if (!requireNamespace("sf", quietly = TRUE)) install.packages("sf")
+if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
+if (!requireNamespace("tidyverse", quietly = TRUE)) install.packages("tidyverse")
+
 library(dplyr)
 library(ggplot2)
 library(gganimate)
