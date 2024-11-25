@@ -1,24 +1,20 @@
 ---
-title: "My Final Project Template"
-author: Your name here
-subtitle: Subtitle here if desired
-date: today
-date-format: long
+title: "Pedestrian Fatalities in NYS"
+author: Andrea Harder
+subtitle: 2019-2023
+date: 11/15  
 ---
-
+#
 # Introduction
+Pedestrian safety across the U.S. has declined significantly over the past several decades. According to the U.S. Department of Transportation, 7,388 pedestrians were killed in motor vehicle crashes in 2021 which represents a 12.5 percent increase from 2020 and a 40 year high (U.S. DOT, 2023). 
 
-\[\~ 200 words\]
-
-Clearly stated background and questions / hypotheses / problems being addressed. Sets up the analysis in an interesting and compelling way. Include figures if you like.
+# Research Questions
+1.  Are national trends in fatal accidents involving pedestrians and cyclists present at the state level?
+2.  What is the geospatial distribution of crashes involving pedestrians and bicyclists across NYS by county?
+3.  What are the most common causes of pedestrian and cyclist fatalities in NYS? 
 
 # Materials and methods
-
-\[\~ 200 words\]
-
 Narrative: Clear narrative description of the data sources and methods. Includes data from at least two sources that were integrated / merged in R.
-
-Code: The code associated with the project is well organized and easy to follow. Demonstrates mastery of R graphics and functions.
 
 Data: The underlying data are publicly accessible via the web and downloaded/accessed within the Rmd script. If you want to use your own data, you must make it available on a website (e.g. Figshare) so that others are able to re-run your code.
 
@@ -34,87 +30,144 @@ You can do numbers like this:
 2.  The second most important thing
 3.  The third most important thing
 
-See <http://rmarkdown.rstudio.com/> for all the amazing things you can do.
-
-Here's my first code chunk.
-
-```{r}
-x=3+4
-```
-
-Refer to output in your narrative like this: x=`r x` .
-
-Load any required packages in a code chunk (you may need to install some packages):
-
-```{r, message=F, warning=F}
+# Download and clean all required data
+```{r data, echo=TRUE, message = FALSE, eval = TRUE}
+if(!requireNamespace("tidyverse", quietly = TRUE)){
+  install.packages("tidyverse")
+}
 library(tidyverse)
-library(leaflet)
-library(kableExtra)
-library(htmlwidgets)
-library(widgetframe)
-knitr::opts_chunk$set(widgetframe_widgets_dir = 'widgets' ) 
-knitr::opts_chunk$set(cache=TRUE)  # cache the results for quick compiling
+
+if(!requireNamespace("dplyr", quietly = TRUE)){
+  install.packages("dplyr")
+}
+library(dplyr)
+
+if(!requireNamespace("ggplot2", quietly = TRUE)){
+  install.packages("ggplot2")
+}
+library(ggplot2)
+
+if(!requireNamespace("sf", quietly = TRUE)){
+  install.packages("sf")
+}
+library(sf)
+
+if(!requireNamespace("knitr", quietly = TRUE)){
+  install.packages("knitr")
+}
+library(knitr)
+
+#library(tidyverse)
+#library(dplyr)
+#library(ggplot2)
+#library(sf)
+#library(knitr)
+
+#Motor vehicle crashes case information: Filtered by year, crash descriptor (i.e. fatal accident), and event descriptor (i.e. pedestrian collision with)
+data2019ped <- read.csv("https://data.ny.gov/resource/e8ky-4vqe.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60accident_descriptor%60%2C%0A%20%20%60time%60%2C%0A%20%20%60date%60%2C%0A%20%20%60day_of_week%60%2C%0A%20%20%60police_report%60%2C%0A%20%20%60lighting_conditions%60%2C%0A%20%20%60municipality%60%2C%0A%20%20%60collision_type_descriptor%60%2C%0A%20%20%60county_name%60%2C%0A%20%20%60road_descriptor%60%2C%0A%20%20%60weather_conditions%60%2C%0A%20%20%60traffic_control_device%60%2C%0A%20%20%60road_surface_conditions%60%2C%0A%20%20%60dot_reference_marker_location%60%2C%0A%20%20%60pedestrian_bicyclist_action%60%2C%0A%20%20%60event_descriptor%60%2C%0A%20%20%60number_of_vehicles_involved%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222019%22))%0A%20%20AND%20(caseless_one_of(%60accident_descriptor%60%2C%20%22Fatal%20Accident%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%0A%20%20%20%20%20%20%20%20%20%20%20%60event_descriptor%60%2C%0A%20%20%20%20%20%20%20%20%20%20%20%22Pedestrian%2C%20Collision%20With%22%0A%20%20%20%20%20%20%20%20%20))")
+
+data2020ped <- read.csv("https://data.ny.gov/resource/e8ky-4vqe.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60accident_descriptor%60%2C%0A%20%20%60time%60%2C%0A%20%20%60date%60%2C%0A%20%20%60day_of_week%60%2C%0A%20%20%60police_report%60%2C%0A%20%20%60lighting_conditions%60%2C%0A%20%20%60municipality%60%2C%0A%20%20%60collision_type_descriptor%60%2C%0A%20%20%60county_name%60%2C%0A%20%20%60road_descriptor%60%2C%0A%20%20%60weather_conditions%60%2C%0A%20%20%60traffic_control_device%60%2C%0A%20%20%60road_surface_conditions%60%2C%0A%20%20%60dot_reference_marker_location%60%2C%0A%20%20%60pedestrian_bicyclist_action%60%2C%0A%20%20%60event_descriptor%60%2C%0A%20%20%60number_of_vehicles_involved%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222020%22))%0A%20%20AND%20(caseless_one_of(%60accident_descriptor%60%2C%20%22Fatal%20Accident%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%0A%20%20%20%20%20%20%20%20%20%20%20%60event_descriptor%60%2C%0A%20%20%20%20%20%20%20%20%20%20%20%22Pedestrian%2C%20Collision%20With%22%0A%20%20%20%20%20%20%20%20%20))")
+
+data2021ped <- read.csv("https://data.ny.gov/resource/e8ky-4vqe.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60accident_descriptor%60%2C%0A%20%20%60time%60%2C%0A%20%20%60date%60%2C%0A%20%20%60day_of_week%60%2C%0A%20%20%60police_report%60%2C%0A%20%20%60lighting_conditions%60%2C%0A%20%20%60municipality%60%2C%0A%20%20%60collision_type_descriptor%60%2C%0A%20%20%60county_name%60%2C%0A%20%20%60road_descriptor%60%2C%0A%20%20%60weather_conditions%60%2C%0A%20%20%60traffic_control_device%60%2C%0A%20%20%60road_surface_conditions%60%2C%0A%20%20%60dot_reference_marker_location%60%2C%0A%20%20%60pedestrian_bicyclist_action%60%2C%0A%20%20%60event_descriptor%60%2C%0A%20%20%60number_of_vehicles_involved%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222021%22))%0A%20%20AND%20(caseless_one_of(%60accident_descriptor%60%2C%20%22Fatal%20Accident%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%0A%20%20%20%20%20%20%20%20%20%20%20%60event_descriptor%60%2C%0A%20%20%20%20%20%20%20%20%20%20%20%22Pedestrian%2C%20Collision%20With%22%0A%20%20%20%20%20%20%20%20%20))")
+
+data2022ped <- read.csv("https://data.ny.gov/resource/e8ky-4vqe.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60accident_descriptor%60%2C%0A%20%20%60time%60%2C%0A%20%20%60date%60%2C%0A%20%20%60day_of_week%60%2C%0A%20%20%60police_report%60%2C%0A%20%20%60lighting_conditions%60%2C%0A%20%20%60municipality%60%2C%0A%20%20%60collision_type_descriptor%60%2C%0A%20%20%60county_name%60%2C%0A%20%20%60road_descriptor%60%2C%0A%20%20%60weather_conditions%60%2C%0A%20%20%60traffic_control_device%60%2C%0A%20%20%60road_surface_conditions%60%2C%0A%20%20%60dot_reference_marker_location%60%2C%0A%20%20%60pedestrian_bicyclist_action%60%2C%0A%20%20%60event_descriptor%60%2C%0A%20%20%60number_of_vehicles_involved%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222022%22))%0A%20%20AND%20(caseless_one_of(%60accident_descriptor%60%2C%20%22Fatal%20Accident%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%0A%20%20%20%20%20%20%20%20%20%20%20%60event_descriptor%60%2C%0A%20%20%20%20%20%20%20%20%20%20%20%22Pedestrian%2C%20Collision%20With%22%0A%20%20%20%20%20%20%20%20%20))")
+
+data2023ped <- read.csv("https://data.ny.gov/resource/e8ky-4vqe.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60accident_descriptor%60%2C%0A%20%20%60time%60%2C%0A%20%20%60date%60%2C%0A%20%20%60day_of_week%60%2C%0A%20%20%60police_report%60%2C%0A%20%20%60lighting_conditions%60%2C%0A%20%20%60municipality%60%2C%0A%20%20%60collision_type_descriptor%60%2C%0A%20%20%60county_name%60%2C%0A%20%20%60road_descriptor%60%2C%0A%20%20%60weather_conditions%60%2C%0A%20%20%60traffic_control_device%60%2C%0A%20%20%60road_surface_conditions%60%2C%0A%20%20%60dot_reference_marker_location%60%2C%0A%20%20%60pedestrian_bicyclist_action%60%2C%0A%20%20%60event_descriptor%60%2C%0A%20%20%60number_of_vehicles_involved%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222023%22))%0A%20%20AND%20(caseless_one_of(%60accident_descriptor%60%2C%20%22Fatal%20Accident%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%0A%20%20%20%20%20%20%20%20%20%20%20%60event_descriptor%60%2C%0A%20%20%20%20%20%20%20%20%20%20%20%22Pedestrian%2C%20Collision%20With%22%0A%20%20%20%20%20%20%20%20%20))")
+
+#Combine the datasets
+CaseInfo <- rbind(data2019ped,data2020ped,data2021ped,data2022ped,data2023ped)
+
+#Motor vehicle crashes individual information: Filtered by year, role type (i.e. pedestrian), and injury severeity (i.e. killed)
+
+Ind2019ped <- read.csv("https://data.ny.gov/resource/ir4y-sesj.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60case_individual_id%60%2C%0A%20%20%60case_vehicle_id%60%2C%0A%20%20%60victim_status%60%2C%0A%20%20%60role_type%60%2C%0A%20%20%60seating_position%60%2C%0A%20%20%60ejection%60%2C%0A%20%20%60license_state_code%60%2C%0A%20%20%60gender%60%2C%0A%20%20%60transported_by%60%2C%0A%20%20%60safety_equipment%60%2C%0A%20%20%60injury_descriptor%60%2C%0A%20%20%60injury_location%60%2C%0A%20%20%60injury_severity%60%2C%0A%20%20%60age%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222019%22))%0A%20%20AND%20(caseless_one_of(%60role_type%60%2C%20%22Pedestrian%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%60injury_severity%60%2C%20%22Killed%22))")
+
+Ind2020ped <- read.csv("https://data.ny.gov/resource/ir4y-sesj.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60case_individual_id%60%2C%0A%20%20%60case_vehicle_id%60%2C%0A%20%20%60victim_status%60%2C%0A%20%20%60role_type%60%2C%0A%20%20%60seating_position%60%2C%0A%20%20%60ejection%60%2C%0A%20%20%60license_state_code%60%2C%0A%20%20%60gender%60%2C%0A%20%20%60transported_by%60%2C%0A%20%20%60safety_equipment%60%2C%0A%20%20%60injury_descriptor%60%2C%0A%20%20%60injury_location%60%2C%0A%20%20%60injury_severity%60%2C%0A%20%20%60age%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222020%22))%0A%20%20AND%20(caseless_one_of(%60role_type%60%2C%20%22Pedestrian%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%60injury_severity%60%2C%20%22Killed%22))")
+
+Ind2021ped <- read.csv("https://data.ny.gov/resource/ir4y-sesj.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60case_individual_id%60%2C%0A%20%20%60case_vehicle_id%60%2C%0A%20%20%60victim_status%60%2C%0A%20%20%60role_type%60%2C%0A%20%20%60seating_position%60%2C%0A%20%20%60ejection%60%2C%0A%20%20%60license_state_code%60%2C%0A%20%20%60gender%60%2C%0A%20%20%60transported_by%60%2C%0A%20%20%60safety_equipment%60%2C%0A%20%20%60injury_descriptor%60%2C%0A%20%20%60injury_location%60%2C%0A%20%20%60injury_severity%60%2C%0A%20%20%60age%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222021%22))%0A%20%20AND%20(caseless_one_of(%60role_type%60%2C%20%22Pedestrian%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%60injury_severity%60%2C%20%22Killed%22))")
+
+Ind2022ped <- read.csv("https://data.ny.gov/resource/ir4y-sesj.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60case_individual_id%60%2C%0A%20%20%60case_vehicle_id%60%2C%0A%20%20%60victim_status%60%2C%0A%20%20%60role_type%60%2C%0A%20%20%60seating_position%60%2C%0A%20%20%60ejection%60%2C%0A%20%20%60license_state_code%60%2C%0A%20%20%60gender%60%2C%0A%20%20%60transported_by%60%2C%0A%20%20%60safety_equipment%60%2C%0A%20%20%60injury_descriptor%60%2C%0A%20%20%60injury_location%60%2C%0A%20%20%60injury_severity%60%2C%0A%20%20%60age%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222022%22))%0A%20%20AND%20(caseless_one_of(%60role_type%60%2C%20%22Pedestrian%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%60injury_severity%60%2C%20%22Killed%22))")
+
+Ind2023ped <- read.csv("https://data.ny.gov/resource/ir4y-sesj.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60case_individual_id%60%2C%0A%20%20%60case_vehicle_id%60%2C%0A%20%20%60victim_status%60%2C%0A%20%20%60role_type%60%2C%0A%20%20%60seating_position%60%2C%0A%20%20%60ejection%60%2C%0A%20%20%60license_state_code%60%2C%0A%20%20%60gender%60%2C%0A%20%20%60transported_by%60%2C%0A%20%20%60safety_equipment%60%2C%0A%20%20%60injury_descriptor%60%2C%0A%20%20%60injury_location%60%2C%0A%20%20%60injury_severity%60%2C%0A%20%20%60age%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222023%22))%0A%20%20AND%20(caseless_one_of(%60role_type%60%2C%20%22Pedestrian%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%60injury_severity%60%2C%20%22Killed%22))")
+
+#Combine the datasets
+IndividualInfo <- rbind(Ind2019ped,Ind2020ped,Ind2021ped,Ind2022ped,Ind2023ped)
+
+#Load shapefiles
+
+#Plot 1: Individual Information Pedestrian Fatalities Overtime
+YearCount <- IndividualInfo%>%
+group_by(year)%>%
+summarize(n = n())
+
+ggplot()+
+geom_line(data = YearCount, aes(x=year, y = n))+
+   ggtitle("Pedestrian Fatalities Overtime", subtitle = "NYS 2019-2023")+
+  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+
+  xlab("Year")+
+  ylab("Fatalities")
+
+#Plot 2: Case Information Fatalities overtime
+YearCountCase <- CaseInfo%>%
+group_by(year)%>%
+summarize(n = n())
+
+ggplot()+
+geom_line(data = YearCountCase, aes(x=year, y = n))+
+  ggtitle("Pedestrian Fatalities Overtime", subtitle = "NYS 2019-2023")+
+  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+
+  xlab("Year")+
+  ylab("Fatalities")
+
+#Plot 3: Individual Information Age
+Age <-IndividualInfo$age 
+  hist(Age, breaks=c(0,10,20,30,40,50,60,70,80,90,100), xlim=c(0,100))
+
+#Plot 4: Case Information Day of Week
+DayofWeek <- CaseInfo %>%
+mutate(day_of_week = factor(day_of_week, levels = c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"),ordered = TRUE))%>%
+  group_by(day_of_week)%>%
+  count(day_of_week)
+names(DayofWeek)[2] <- "Count"
+
+ggplot(data = DayofWeek, aes(x= day_of_week, y= Count))+
+  geom_bar(stat = "identity")+
+  ggtitle("Pedestrian Fatalities by Day of Week", subtitle = "NYS 2019-2023")+
+  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+
+  xlab("Day of Week")+
+  ylab("Fatalities")
+
+#Plot 5: Case Information Crashes by County and reference marker
+
+#Plot 7: Case Information Weather 
+Weather <- CaseInfo %>%
+  group_by(weather_conditions)%>%
+  count(weather_conditions)
+names(Weather)[2] <- "Count"
+
+ggplot(data = Weather, aes(x= weather_conditions, y= Count))+
+  geom_bar(stat = "identity")+
+   ggtitle("Pedestrian Fatalities by Weather Conditions", subtitle = "NYS 2019-2023")+
+  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+
+  xlab("Weather Conditions")+
+  ylab("Fatalities")
+
+#Plot 8: Case Information Pedestrian action
+Action <- CaseInfo %>%
+  group_by(pedestrian_bicyclist_action)%>%
+  count(pedestrian_bicyclist_action)%>%
+  arrange(desc(n))
+names(Action)[1] <- "Pedestrian Action"
+names(Action)[2] <- "Count"
+kable(Action)
 ```
-
-## Download and clean all required data
-
-```{r}
-n=20
-data=data.frame(x=runif(n,-180,180),
-                y=runif(n,-60,60),
-                size = runif(n, 5, 20),
-                category = factor(
-                  sample(letters[1:5], n, replace = TRUE)
-                  ),
-                value = rnorm(n))
-```
-
-```{r, results='asis'}
-data %>% 
-  slice(1:10) %>% #show only 1:n rows
-  kable(digits=2,align="c")%>% #make table and round to two digits
-  kable_styling(bootstrap_options = 
-                  c("striped", "hover", "condensed", "responsive")) #apply other formatting
-```
-
-Add any additional processing steps here.
 
 # Results
-
-\[\~200 words\]
-
 Tables and figures (maps and other graphics) are carefully planned to convey the results of your analysis. Intense exploration and evidence of many trials and failures. The author looked at the data in many different ways before coming to the final presentation of the data.
 
 Show tables, plots, etc. and describe them.
 
-```{r, fig.width=6, fig.height=3, fig.cap="Map of completely random data"}
-m <- leaflet(data) %>% 
-  addTiles() %>% 
-  addCircleMarkers(~x, ~y, radius = ~size,color = ~as.factor(category)) %>% 
-  addPopups(~x[2], ~y[2], "Random popup")
-m  # a map with the default OSM tile layer
-```
-
-```{r}
-data %>% 
-  ggplot(aes(x=x,y=y,col=category))+
-  geom_point()
-```
-
-### Dygraphs Example
-
-```{r}
-library(dygraphs)
-dygraph(nhtemp, main = "New Haven Temperatures") |> 
-  dyRangeSelector(dateWindow = c("1920-01-01", "1960-01-01")) 
-```
-
 # Conclusions
-
-\[\~200 words\]
-
 Clear summary adequately describing the results and putting them in context. Discussion of further questions and ways to continue investigation.
 
 # References
-
 All sources are cited in a consistent manner
