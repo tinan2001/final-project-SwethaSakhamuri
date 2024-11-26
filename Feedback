@@ -1,0 +1,293 @@
+---
+title: "Pedestrian Fatalities in NYS"
+author: Andrea Harder
+subtitle: 2019-2023
+fortmat: 
+html: 
+code-fold: true
+code-summary: "Show the code"
+date: 11/15  
+---
+
+# Introduction
+Pedestrian safety across the U.S. has declined significantly over the past several decades. According to the U.S. Department of Transportation, 7,388 pedestrians were killed in motor vehicle crashes in 2021, which represents a 12.5 percent increase from 2020 and a 40-year high (U.S. DOT, 2023). New York State (NYS) is home to roughly 20 million people, and it is estimated that approximately 300 pedestrians die in motor vehicle crashes per year.  The state is committed to creating safe streets for all users regardless of their mode of preference and socio-economic status. In 2016 NYS launched a 5-year pedestrian safety campaign that would allocate up to $110 million to engineering, enforcement, and education-related pedestrian safety projects. Trends and common characteristics of pedestrian fatalities over the past several years can be explored to better understand how effective the pedestrian safety campaign has been and what the most viable strategies are for improving pedestrian safety moving forward. 
+
+# Research Questions
+1.  Are national trends in fatal accidents involving pedestrians present at the state level?
+2.  What is the geospatial distribution of crashes involving pedestrians across NYS?
+3.  What are the most common causes of pedestrian fatalities in NYS?
+
+# Materials and Methods
+Crashes involving injury or death or include damages exceeding $1,000 must be reported to the Department of Motor Vehicles (DMV) according to NYS Vehicle and Traffic Laws. The DMV has compiled some of this data into the following four datasets which can be analyzed to understand common trends and characteristics of motor vehicle crashes: 
+ 
+  1. Individual Information
+  2. Crash Case Information
+  3. Vehicle Information
+  4. Violation Information 
+
+Two of these datasets contain useful information relating to fatal accidents involving pedestrians. The Individual Information datset 
+
+can be filtered to identify injuries resulting in the death of a pedestrian. Each case reports the year of the accident and the age of the victim. Other variables are provided but are not explored in this analysis. 
+
+The Case Information dataset also provides information relating to the year of the accident. This information can be used to explore recent trends in collisions involving pedestrians. There are also multiple variables that can help explain the geospatial distribution of crashes in NYS. These variables include muncipality, county, and reference marker location information. Other variables including the day of the week, lighting conditions, weather conditions, and details about what the pedestrian was doing at the time of the crash can similarly be explored to better understand common causes and characteristics of fatalities. 
+
+Even though the Case Information dataset provides a lot of rich information, it has a significant limitation. As previously mentioned the dataset reports collisions with pedestrians, but there is no guarentee that the pedestrian is the one that died in the motor vehicle crash. Realistically speaking, however, a motorist has a better chance of walking away from a fatal collision than a pedestrian. Therefore this dataset remains useful for exploring the research questions. 
+
+There is currently no variable that can be used to join the information across the Individual Information and Case Information shapefiles. Two complementary shapefiles will be used to visualize the geospatial distribution of crashes including a counties shoreline shapefile and a reference marker shapefile.    
+
+The datasets and shapefiles can be accessed using the following hyperlinks: 
+
+[Individual Information](https://data.ny.gov/Transportation/Motor-Vehicle-Crashes-Individual-Information-Three/ir4y-sesj/about_data)  
+
+[Case Information](https://data.ny.gov/Transportation/Motor-Vehicle-Crashes-Case-Information-Three-Year-/e8ky-4vqe/about_data)
+
+[Civil Boundaries](https://gis.ny.gov/civil-boundaries)
+
+[Reference Marker Locations](https://www.arcgis.com/home/item.html?id=79f2020d56754e48929312a0f0fa9654)
+
+# Load required packages, datasets, and shapefiles 
+```{r, message = F, warning = F}
+if(!requireNamespace("tidyverse", quietly = TRUE)){
+  install.packages("tidyverse")
+}
+library(tidyverse)
+
+if(!requireNamespace("dplyr", quietly = TRUE)){
+  install.packages("dplyr")
+}
+library(dplyr)
+
+if(!requireNamespace("ggplot2", quietly = TRUE)){
+  install.packages("ggplot2")
+}
+library(ggplot2)
+
+if(!requireNamespace("sf", quietly = TRUE)){
+  install.packages("sf")
+}
+library(sf)
+
+if(!requireNamespace("knitr", quietly = TRUE)){
+  install.packages("knitr")
+}
+library(knitr)
+
+if(!requireNamespace("leaflet", quietly = TRUE)){
+  install.packages("leaflet")
+}
+library(leaflet)
+
+if(!requireNamespace("tidycensus", quietly = TRUE)){
+  install.packages("tidycensus")
+}
+library(tidycensus)
+
+if(!requireNamespace("egg", quietly = TRUE)){
+  install.packages("egg")
+} 
+library(egg)
+
+#Motor vehicle crashes case information: Filtered by year, crash descriptor (i.e. fatal accident), and event descriptor (i.e. pedestrian collision with)
+data2019ped <- read.csv("https://data.ny.gov/resource/e8ky-4vqe.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60accident_descriptor%60%2C%0A%20%20%60time%60%2C%0A%20%20%60date%60%2C%0A%20%20%60day_of_week%60%2C%0A%20%20%60police_report%60%2C%0A%20%20%60lighting_conditions%60%2C%0A%20%20%60municipality%60%2C%0A%20%20%60collision_type_descriptor%60%2C%0A%20%20%60county_name%60%2C%0A%20%20%60road_descriptor%60%2C%0A%20%20%60weather_conditions%60%2C%0A%20%20%60traffic_control_device%60%2C%0A%20%20%60road_surface_conditions%60%2C%0A%20%20%60dot_reference_marker_location%60%2C%0A%20%20%60pedestrian_bicyclist_action%60%2C%0A%20%20%60event_descriptor%60%2C%0A%20%20%60number_of_vehicles_involved%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222019%22))%0A%20%20AND%20(caseless_one_of(%60accident_descriptor%60%2C%20%22Fatal%20Accident%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%0A%20%20%20%20%20%20%20%20%20%20%20%60event_descriptor%60%2C%0A%20%20%20%20%20%20%20%20%20%20%20%22Pedestrian%2C%20Collision%20With%22%0A%20%20%20%20%20%20%20%20%20))")
+
+data2020ped <- read.csv("https://data.ny.gov/resource/e8ky-4vqe.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60accident_descriptor%60%2C%0A%20%20%60time%60%2C%0A%20%20%60date%60%2C%0A%20%20%60day_of_week%60%2C%0A%20%20%60police_report%60%2C%0A%20%20%60lighting_conditions%60%2C%0A%20%20%60municipality%60%2C%0A%20%20%60collision_type_descriptor%60%2C%0A%20%20%60county_name%60%2C%0A%20%20%60road_descriptor%60%2C%0A%20%20%60weather_conditions%60%2C%0A%20%20%60traffic_control_device%60%2C%0A%20%20%60road_surface_conditions%60%2C%0A%20%20%60dot_reference_marker_location%60%2C%0A%20%20%60pedestrian_bicyclist_action%60%2C%0A%20%20%60event_descriptor%60%2C%0A%20%20%60number_of_vehicles_involved%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222020%22))%0A%20%20AND%20(caseless_one_of(%60accident_descriptor%60%2C%20%22Fatal%20Accident%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%0A%20%20%20%20%20%20%20%20%20%20%20%60event_descriptor%60%2C%0A%20%20%20%20%20%20%20%20%20%20%20%22Pedestrian%2C%20Collision%20With%22%0A%20%20%20%20%20%20%20%20%20))")
+
+data2021ped <- read.csv("https://data.ny.gov/resource/e8ky-4vqe.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60accident_descriptor%60%2C%0A%20%20%60time%60%2C%0A%20%20%60date%60%2C%0A%20%20%60day_of_week%60%2C%0A%20%20%60police_report%60%2C%0A%20%20%60lighting_conditions%60%2C%0A%20%20%60municipality%60%2C%0A%20%20%60collision_type_descriptor%60%2C%0A%20%20%60county_name%60%2C%0A%20%20%60road_descriptor%60%2C%0A%20%20%60weather_conditions%60%2C%0A%20%20%60traffic_control_device%60%2C%0A%20%20%60road_surface_conditions%60%2C%0A%20%20%60dot_reference_marker_location%60%2C%0A%20%20%60pedestrian_bicyclist_action%60%2C%0A%20%20%60event_descriptor%60%2C%0A%20%20%60number_of_vehicles_involved%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222021%22))%0A%20%20AND%20(caseless_one_of(%60accident_descriptor%60%2C%20%22Fatal%20Accident%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%0A%20%20%20%20%20%20%20%20%20%20%20%60event_descriptor%60%2C%0A%20%20%20%20%20%20%20%20%20%20%20%22Pedestrian%2C%20Collision%20With%22%0A%20%20%20%20%20%20%20%20%20))")
+
+data2022ped <- read.csv("https://data.ny.gov/resource/e8ky-4vqe.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60accident_descriptor%60%2C%0A%20%20%60time%60%2C%0A%20%20%60date%60%2C%0A%20%20%60day_of_week%60%2C%0A%20%20%60police_report%60%2C%0A%20%20%60lighting_conditions%60%2C%0A%20%20%60municipality%60%2C%0A%20%20%60collision_type_descriptor%60%2C%0A%20%20%60county_name%60%2C%0A%20%20%60road_descriptor%60%2C%0A%20%20%60weather_conditions%60%2C%0A%20%20%60traffic_control_device%60%2C%0A%20%20%60road_surface_conditions%60%2C%0A%20%20%60dot_reference_marker_location%60%2C%0A%20%20%60pedestrian_bicyclist_action%60%2C%0A%20%20%60event_descriptor%60%2C%0A%20%20%60number_of_vehicles_involved%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222022%22))%0A%20%20AND%20(caseless_one_of(%60accident_descriptor%60%2C%20%22Fatal%20Accident%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%0A%20%20%20%20%20%20%20%20%20%20%20%60event_descriptor%60%2C%0A%20%20%20%20%20%20%20%20%20%20%20%22Pedestrian%2C%20Collision%20With%22%0A%20%20%20%20%20%20%20%20%20))")
+
+data2023ped <- read.csv("https://data.ny.gov/resource/e8ky-4vqe.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60accident_descriptor%60%2C%0A%20%20%60time%60%2C%0A%20%20%60date%60%2C%0A%20%20%60day_of_week%60%2C%0A%20%20%60police_report%60%2C%0A%20%20%60lighting_conditions%60%2C%0A%20%20%60municipality%60%2C%0A%20%20%60collision_type_descriptor%60%2C%0A%20%20%60county_name%60%2C%0A%20%20%60road_descriptor%60%2C%0A%20%20%60weather_conditions%60%2C%0A%20%20%60traffic_control_device%60%2C%0A%20%20%60road_surface_conditions%60%2C%0A%20%20%60dot_reference_marker_location%60%2C%0A%20%20%60pedestrian_bicyclist_action%60%2C%0A%20%20%60event_descriptor%60%2C%0A%20%20%60number_of_vehicles_involved%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222023%22))%0A%20%20AND%20(caseless_one_of(%60accident_descriptor%60%2C%20%22Fatal%20Accident%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%0A%20%20%20%20%20%20%20%20%20%20%20%60event_descriptor%60%2C%0A%20%20%20%20%20%20%20%20%20%20%20%22Pedestrian%2C%20Collision%20With%22%0A%20%20%20%20%20%20%20%20%20))")
+
+#Combine the datasets
+CaseInfo <- rbind(data2019ped,data2020ped,data2021ped,data2022ped,data2023ped)
+names(CaseInfo)[15] <- "PANEL"
+
+#Motor vehicle crashes individual information: Filtered by year, role type (i.e. pedestrian), and injury severeity (i.e. killed)
+
+Ind2019ped <- read.csv("https://data.ny.gov/resource/ir4y-sesj.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60case_individual_id%60%2C%0A%20%20%60case_vehicle_id%60%2C%0A%20%20%60victim_status%60%2C%0A%20%20%60role_type%60%2C%0A%20%20%60seating_position%60%2C%0A%20%20%60ejection%60%2C%0A%20%20%60license_state_code%60%2C%0A%20%20%60gender%60%2C%0A%20%20%60transported_by%60%2C%0A%20%20%60safety_equipment%60%2C%0A%20%20%60injury_descriptor%60%2C%0A%20%20%60injury_location%60%2C%0A%20%20%60injury_severity%60%2C%0A%20%20%60age%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222019%22))%0A%20%20AND%20(caseless_one_of(%60role_type%60%2C%20%22Pedestrian%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%60injury_severity%60%2C%20%22Killed%22))")
+
+Ind2020ped <- read.csv("https://data.ny.gov/resource/ir4y-sesj.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60case_individual_id%60%2C%0A%20%20%60case_vehicle_id%60%2C%0A%20%20%60victim_status%60%2C%0A%20%20%60role_type%60%2C%0A%20%20%60seating_position%60%2C%0A%20%20%60ejection%60%2C%0A%20%20%60license_state_code%60%2C%0A%20%20%60gender%60%2C%0A%20%20%60transported_by%60%2C%0A%20%20%60safety_equipment%60%2C%0A%20%20%60injury_descriptor%60%2C%0A%20%20%60injury_location%60%2C%0A%20%20%60injury_severity%60%2C%0A%20%20%60age%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222020%22))%0A%20%20AND%20(caseless_one_of(%60role_type%60%2C%20%22Pedestrian%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%60injury_severity%60%2C%20%22Killed%22))")
+
+Ind2021ped <- read.csv("https://data.ny.gov/resource/ir4y-sesj.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60case_individual_id%60%2C%0A%20%20%60case_vehicle_id%60%2C%0A%20%20%60victim_status%60%2C%0A%20%20%60role_type%60%2C%0A%20%20%60seating_position%60%2C%0A%20%20%60ejection%60%2C%0A%20%20%60license_state_code%60%2C%0A%20%20%60gender%60%2C%0A%20%20%60transported_by%60%2C%0A%20%20%60safety_equipment%60%2C%0A%20%20%60injury_descriptor%60%2C%0A%20%20%60injury_location%60%2C%0A%20%20%60injury_severity%60%2C%0A%20%20%60age%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222021%22))%0A%20%20AND%20(caseless_one_of(%60role_type%60%2C%20%22Pedestrian%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%60injury_severity%60%2C%20%22Killed%22))")
+
+Ind2022ped <- read.csv("https://data.ny.gov/resource/ir4y-sesj.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60case_individual_id%60%2C%0A%20%20%60case_vehicle_id%60%2C%0A%20%20%60victim_status%60%2C%0A%20%20%60role_type%60%2C%0A%20%20%60seating_position%60%2C%0A%20%20%60ejection%60%2C%0A%20%20%60license_state_code%60%2C%0A%20%20%60gender%60%2C%0A%20%20%60transported_by%60%2C%0A%20%20%60safety_equipment%60%2C%0A%20%20%60injury_descriptor%60%2C%0A%20%20%60injury_location%60%2C%0A%20%20%60injury_severity%60%2C%0A%20%20%60age%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222022%22))%0A%20%20AND%20(caseless_one_of(%60role_type%60%2C%20%22Pedestrian%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%60injury_severity%60%2C%20%22Killed%22))")
+
+Ind2023ped <- read.csv("https://data.ny.gov/resource/ir4y-sesj.csv?$query=SELECT%0A%20%20%60year%60%2C%0A%20%20%60case_individual_id%60%2C%0A%20%20%60case_vehicle_id%60%2C%0A%20%20%60victim_status%60%2C%0A%20%20%60role_type%60%2C%0A%20%20%60seating_position%60%2C%0A%20%20%60ejection%60%2C%0A%20%20%60license_state_code%60%2C%0A%20%20%60gender%60%2C%0A%20%20%60transported_by%60%2C%0A%20%20%60safety_equipment%60%2C%0A%20%20%60injury_descriptor%60%2C%0A%20%20%60injury_location%60%2C%0A%20%20%60injury_severity%60%2C%0A%20%20%60age%60%0AWHERE%0A%20%20(%60year%60%20IN%20(%222023%22))%0A%20%20AND%20(caseless_one_of(%60role_type%60%2C%20%22Pedestrian%22)%0A%20%20%20%20%20%20%20%20%20AND%20caseless_one_of(%60injury_severity%60%2C%20%22Killed%22))")
+
+#Combine the datasets
+IndividualInfo <- rbind(Ind2019ped,Ind2020ped,Ind2021ped,Ind2022ped,Ind2023ped)
+
+#Load shapefiles
+Counties <- read_sf("data/Counties_Shoreline.shp")%>%
+  mutate(NAME = toupper(NAME))
+
+ReferenceMarkers <- read_sf("data/ReferenceMarkers.shp")
+
+FatalAccidentsCounty <- CaseInfo %>%
+  group_by(county_name) %>%
+  summarize(n = n())
+names(FatalAccidentsCounty)[1] <- "NAME"
+names(FatalAccidentsCounty)[2] <- "Count"
+
+MapJoin <- Counties %>%
+ left_join(FatalAccidentsCounty, by = c("NAME"))
+
+MapJoin2 <- ReferenceMarkers %>%
+ inner_join(CaseInfo, by =c("PANEL"))
+
+MapJoin3 <- MapJoin %>% 
+  mutate(DeathsPer1k = (Count/POP2020)*100000)
+```
+
+# Results
+### Fatalities Overtime (2019-2023)
+As discussed in the methodology section above, the Individual Information dataset and the Case Information dataset both report fatalities overtime, but the Case Information dataset only reports fatal collisions involving pedestrians generally and there is no way to determine whether the person who died was the motorist or the pedestrian. 
+
+Since both datasets contain valuable variables that are used in subsequent analyses, it is important to compare the results for reported fatalities overtime. For the period 2019-2023 the Individual Information dataset reports 1,375 pedestrian fatalities whereas the Case Information dataset reports 1,301 fatal accidents involving pedestrians. Although different, the graphs display similar trends. Both datasets indicate a small net increase in fatalities from 2019 to 2023. Each dataset also shows a noteworthy decrease in pedestrian fatalities in 2020 which can be explained by lockdowns and travel restrictions that kept everyone home during the height of the COVID-19 pandemic.  
+
+```{r, echo=TRUE, message = FALSE, eval = TRUE}
+#Plot 1: Fatalities over time (Individual Information vs. Case Information)
+YearCount <- IndividualInfo%>%
+group_by(year)%>%
+summarize(n = n()) #1375
+
+YearCountCase <- CaseInfo%>%
+group_by(year)%>%
+summarize(n = n()) #1301
+
+A<- ggplot()+
+geom_line(data = YearCount, aes(x=year, y = n))+
+   ggtitle("Individual Information")+
+  theme(plot.title = element_text(hjust = 0.5, size = 15, color = "black", family = "sans"))+
+  xlab("Year")+
+  ylab("Fatalities")+
+  ylim(210,310)
+
+B<- ggplot()+
+geom_line(data = YearCountCase, aes(x=year, y = n))+
+  ggtitle("Case Information")+
+  theme(plot.title = element_text(hjust = 0.5, size = 15, color = "black", family = "sans"))+
+  xlab("Year")+
+  ylab("Fatalities")+
+  ylim(210,310)
+
+ggarrange(A,B, ncol = 2, nrow= 1)
+```
+
+### Age
+According the the U.S. DOT, the average age of pedestrians killed in motor vehicle accidents was 47 in 2021 (NHTSA, 2023). From 2019 to 2023, the Individual Information dataset reported a slightly higher average with pedestrians killed in motor vehicle crashes in NYS having an average age of 52. The distribution appears to be normal and does not yield any surprising results or age groups that appear to be overrepresented.  
+
+```{r, echo=TRUE, message = FALSE, eval = TRUE}
+#Plot 2: Individual Information Age
+Age <-IndividualInfo$age 
+Mean<- mean(IndividualInfo$age, na.rm=TRUE)
+
+hist(Age, breaks=c(0,10,20,30,40,50,60,70,80,90,100), xlim=c(0,100))
+abline(v= Mean, col = "red")
+   
+```
+
+### Day of Week
+The Case Information dataset reports the day of the week of each fatal accident involving a pedestrian. Out of 1,301 fatal accidents, the most fatal accidents happened on Saturday's (n = 209) and the least happened on Sunday's (n = 157). It is possible that these results reflect the driving behaviors of working NYS residents who have Saturday's and Sunday's off but may be more likely to engage in late night or even reckless activities on evenings where they don't have to wake up early for work the next morning. 
+```{r, echo=TRUE, message = FALSE, eval = TRUE}
+#Plot 3: Case Information Day of Week
+DayofWeek <- CaseInfo %>%
+mutate(day_of_week = factor(day_of_week, levels = c("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"),ordered = TRUE))%>%
+  group_by(day_of_week)%>%
+  count(day_of_week)
+names(DayofWeek)[2] <- "Count"
+
+ggplot(data = DayofWeek, aes(x= day_of_week, y= Count))+
+  geom_bar(stat = "identity")+
+  ggtitle("Pedestrian Fatalities by Day of Week", subtitle = "NYS 2019-2023")+
+  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+
+  xlab("Day of Week")+
+  ylab("Fatalities")
+```
+
+### Weather Conditions
+Surprisingly, a majority of fatal accidents (n = 825) involving a pedestrian from 2019 to 2023 occurred during clear weather conditions. It is likely that poor weather conditions (e.g. rain and snow) deter people from walking and under such conditions, would be pedestrians would rather drive or take public transportation than walk. 
+
+```{r, echo=TRUE, message = FALSE, eval = TRUE}
+#Plot 4: Case Information Weather 
+Weather <- CaseInfo %>%
+  group_by(weather_conditions)%>%
+  count(weather_conditions)
+names(Weather)[2] <- "Count"
+
+ggplot(data = Weather, aes(x= weather_conditions, y= Count))+
+  geom_bar(stat = "identity")+
+   ggtitle("Pedestrian Fatalities by Weather Conditions", subtitle = "NYS 2019-2023")+
+  theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))+
+  xlab("Weather Conditions")+
+  ylab("Fatalities")
+```
+
+### Pedestrian Action 
+The most common pedestrian action reported was "Crossing, No Signal or Crosswalk" (n = 481). This suggests a lack of appropriate infrastructure creates dangerous conditions for pedestrians when crossing the road. 
+
+```{r, echo=TRUE, message = FALSE, eval = TRUE}
+#Plot 5: Case Information Pedestrian action
+Action <- CaseInfo %>%
+  group_by(pedestrian_bicyclist_action)%>%
+  count(pedestrian_bicyclist_action)%>%
+  arrange(desc(n))%>%
+  head(5)
+
+names(Action)[1] <- "Pedestrian Action"
+names(Action)[2] <- "Count"
+
+kable(Action)
+```
+
+### Fatalities by County
+The interactive map below shows the geospatial distribution of fatal motor vehicle accidents involving pedestrians in NYS. Even when controlling for population size, counties containing big cities feature more fatal accidents per 100,000 people than counties that don't. For example, Suffolk County and Nassau County feature approximately 12 deaths per 100,000 people and 9 deaths per 100,000 people respectively. Suffolk County and Nassau County are followed by Albany (7.94) which contains the state capitol, Monroe County (7.9) which is home to Rochester, NY, and Onondaga County (7.34) which is where Syracuse is located. One explanation for this trend is that these counties have higher population and urban development densities that are more appealing to pedestrians.      
+
+```{r, echo=TRUE, message = FALSE, eval = TRUE}
+#Plot 6: Fatalities per 100,000 people
+#This website was helpful https://r-graph-gallery.com/183-choropleth-map-with-leaflet.html
+#https://rstudio.github.io/leaflet/articles/legends.html
+Transform <- st_transform(MapJoin3, crs = '+proj=longlat +datum=WGS84')
+Transform2<- st_transform(MapJoin2, crs = '+proj=longlat +datum=WGS84')
+
+text <- paste(
+  "County: ", Transform$NAME, "<br/>", "Fatalities: ", round(Transform$DeathsPer1k, 2), sep = "") %>%
+  lapply(htmltools::HTML)
+
+pal <- colorNumeric(palette = "Reds", domain = Transform$DeathsPer1k)
+  
+leaflet(Transform)%>%
+  addProviderTiles(providers$CartoDB.Positron)%>%
+  setView(lng = -76.12524729, lat = 43.24235909, zoom = 5)%>%
+  addPolygons(stroke = FALSE, , fillOpacity = 0.5,
+  smoothFactor = 0.5, color = ~ colorQuantile("Reds", Count)(Count), label = text)%>%
+  addLegend("bottomright", pal = pal, values = ~DeathsPer1k, title = "Fatalities per 100,000 people (2019-2023)", opacity = 1)
+```
+
+### Fatalities by Reference Marker
+Out of 1,301 reported collisions with pedestrians only 550 cases report a reference marker that can be used to pinpoint the approximate location of an incident. NYSDOT reference markers only exist on roads that are under the jurisdiction of the state. Therefore, many cases probably do not report a reference marker because they happened on a county or municipal managed road. Roads that are under the control of the state may be wider and may have higher speed limits compared to county and municipal roads. Take for example, Buffalo, NY where several accidents appear along Bailey Avenue and Broadway Street. At the intersection of Bailey and Broadway, there are four crosswalks ranging from 70 to 100 feet long that cross five or more lanes of traffic. Although the speed limit at this intersection is only 30 mph, it that the design of these roads encourages speeds that exceed the limit.
+
+```{r data, echo=TRUE, message = FALSE, eval = TRUE}
+#Plot7: Reference Marker
+  
+leaflet(Transform2)%>%
+  addProviderTiles(providers$CartoDB.Positron)%>%
+  setView(lng = -76.12524729, lat = 43.24235909, zoom = 5)%>%
+  addCircleMarkers(color= "black", radius = 4, stroke = FALSE, fillOpacity = 0.5)
+```
+
+# Conclusions
+~200 words
+
+Clear summary adequately describing the results and putting them in context. Discussion of further questions and ways to continue investigation.
+
+It is difficult to come to any concrete conclusions given the nature of the data. Absence of publicly available longitudinal data dating before 2019. Such data would be useful for determing long term trends. 
+
+Research has shown that "Black and Hispanic Americans have higher traffic fatality rates per mile traveled than White Americans" (Raifman, 2022, p. 160). The DMV should consider releasing information relating to the race and ethnicity of the victim. This information can be useful in advancing mobility justice and equitable strategies moving forward. 
+Continued investigation could gender, time of day, month of the year, lighting conditions, 
+analysis at a municipal level. consideration of income and other factors 
+
+
+# References
+Raifman, M. A., & Choma, E. F. (2022). Disparities in Activity and Traffic Fatalities by Race/Ethnicity. American Journal of Preventive Medicine, 63(2), 160–167. https://doi.org/10.1016/j.amepre.2022.03.012
+
